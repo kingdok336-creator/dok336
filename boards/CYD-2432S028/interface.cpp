@@ -197,10 +197,17 @@ void InputHandler(void) {
             auto t = touch.getPointScaled();
 #endif
 #if !defined(TOUCH_GT911_I2C)
-            // Serial.printf("\nRAW: Touch Pressed on x=%d, y=%d",t.x, t.y);
+            // ==================== FIX NAVIGATION START ====================
+            // Silakan ubah true/false di bawah ini jika arah sumbu masih terbalik setelah di-flash
+            bool REVERSE_X = true;   // Set true jika kiri-kanan kebalik
+            bool REVERSE_Y = false;  // Ubah ke true HANYA jika atas-bawah masih kebalik
+
             if (bruceConfigPins.rotation == 3) {
-                t.y = (tftHeight + 20) - t.y;
-                t.x = tftWidth - t.x;
+                if (REVERSE_Y) t.y = tftHeight - t.y;
+                else t.y = t.y; // Normal Y axis (Tanpa +20 bug)
+                
+                if (REVERSE_X) t.x = tftWidth - t.x;
+                else t.x = t.x;
             }
             if (bruceConfigPins.rotation == 0) {
                 int tmp = t.x;
@@ -210,8 +217,9 @@ void InputHandler(void) {
             if (bruceConfigPins.rotation == 2) {
                 int tmp = t.x;
                 t.x = t.y;
-                t.y = (tftHeight + 20) - tmp;
+                t.y = tftHeight - tmp; // Menghilangkan bug +20
             }
+            // ===================== FIX NAVIGATION END =====================
 #endif
             // Serial.printf("\nROT: Touch Pressed on x=%d, y=%d\n", t.x, t.y);
 

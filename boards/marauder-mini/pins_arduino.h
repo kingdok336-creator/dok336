@@ -4,61 +4,58 @@
 #include "soc/soc_caps.h"
 #include <stdint.h>
 
-#define USB_VID 0x303a
-#define USB_PID 0x1001
+// Serial standard bawaan ESP32 DevKit V1
+static const uint8_t TX = 1;
+static const uint8_t RX = 3;
 
-static const uint8_t TX = 43;
-static const uint8_t RX = 44;
+static const uint8_t TXD2 = 17; // Internal only di WROOM
+static const uint8_t RXD2 = 16; // Internal only di WROOM
 
-static const uint8_t TXD2 = 1;
-static const uint8_t RXD2 = 2;
+static const uint8_t SDA = 21;
+static const uint8_t SCL = 22;
 
-static const uint8_t SDA = 13;
-static const uint8_t SCL = 15;
+// SPI default mapping
+static const uint8_t SS = 5;
+static const uint8_t MOSI = 23;
+static const uint8_t MISO = 19;
+static const uint8_t SCK = 18;
 
-// Modified elsewhere
-static const uint8_t SS = -1;
-static const uint8_t MOSI = -1;
-static const uint8_t MISO = -1;
-static const uint8_t SCK = -1;
-
+// Pemetaan Pin Fisik yang Benar-Benar Ada di ESP32 30-Pin
 static const uint8_t G0 = 0;
-static const uint8_t G1 = 1;
 static const uint8_t G2 = 2;
-static const uint8_t G3 = 3;
 static const uint8_t G4 = 4;
 static const uint8_t G5 = 5;
-static const uint8_t G6 = 6;
-static const uint8_t G7 = 7;
-static const uint8_t G8 = 8;
-static const uint8_t G9 = 9;
-static const uint8_t G10 = 10;
-static const uint8_t G11 = 11;
 static const uint8_t G12 = 12;
 static const uint8_t G13 = 13;
-static const uint8_t G14 = 14;
+static const uint8_t G14 = 14; // Dialokasikan untuk TFT_CS di platformio.ini
 static const uint8_t G15 = 15;
-static const uint8_t G39 = 39;
-static const uint8_t G40 = 40;
-static const uint8_t G41 = 41;
-static const uint8_t G42 = 42;
-static const uint8_t G43 = 43;
-static const uint8_t G44 = 44;
-static const uint8_t G46 = 46;
+static const uint8_t G18 = 18; // SPI SCK
+static const uint8_t G19 = 19; // SPI MISO
+static const uint8_t G21 = 21; // I2C SDA
+static const uint8_t G22 = 22; // I2C SCL
+static const uint8_t G23 = 23; // SPI MOSI
+static const uint8_t G25 = 25; // Dialokasikan untuk TFT_DC di platformio.ini
+static const uint8_t G26 = 26;
+static const uint8_t G27 = 27;
+static const uint8_t G32 = 32; // TFT_BL (Backlight)
+static const uint8_t G33 = 33;
+static const uint8_t G34 = 34; // Input Only
+static const uint8_t G35 = 35; // Input Only
+static const uint8_t G36 = 36; // Input Only (VP)
+static const uint8_t G39 = 39; // Input Only (VN)
 
-static const uint8_t ADC1 = 7;
-static const uint8_t ADC2 = 8;
+#define RGB_LED 2 // Dialihkan ke pin LED bawaan board (D2) agar pin 21 aman
 
-#define RGB_LED 21
+#define BAD_TX -1
+#define BAD_RX -1
 
-#define BAD_TX 21
-#define BAD_RX 22
-
-// SERIAL (GPS) dedicated pins
-#define SERIAL_TX 21
-#define SERIAL_RX 22
+// SERIAL (GPS) mapping aman agar tidak bentrok dengan I2C (21 & 22)
+#define SERIAL_TX 26 
+#define SERIAL_RX 27
 #define GPS_SERIAL_TX SERIAL_TX
 #define GPS_SERIAL_RX SERIAL_RX
+
+// Konfigurasi Navigasi Tombol Fisik (Aman, menggunakan pin input-only)
 #define HAS_BTN 1
 #define SEL_BTN 34
 #define UP_BTN 36
@@ -73,6 +70,7 @@ static const uint8_t ADC2 = 8;
 #define LED_ON HIGH
 #define LED_OFF LOW
 
+// Modul Eksternal RF diputus/disable agar hemat pin
 #define CC1101_GDO0_PIN -1
 #define CC1101_SS_PIN -1
 #define CC1101_MOSI_PIN SPI_MOSI_PIN
@@ -93,17 +91,19 @@ static const uint8_t ADC2 = 8;
 #define ROTATION 0
 #define MINBRIGHT 160
 
+// Konfigurasi MicroSD (Menggunakan SPI Utama bersama Layar)
 #define SDCARD_CS 4
 #define SDCARD_SCK 18
 #define SDCARD_MISO 19
 #define SDCARD_MOSI 23
 
-#define GROVE_SDA 33
-#define GROVE_SCL 26
+// Grove dialihkan menggunakan pin standard I2C ESP32
+#define GROVE_SDA 21
+#define GROVE_SCL 22
 
 #define SPI_SCK_PIN 18
 #define SPI_MISO_PIN 19
 #define SPI_MOSI_PIN 23
-#define SPI_SS_PIN 1
+#define SPI_SS_PIN 5
 
 #endif /* Pins_Arduino_h */

@@ -7,11 +7,12 @@
 ** Description:   initial setup for the device
 ***************************************************************************************/
 void _setup_gpio() {
-    pinMode(UP_BTN, INPUT);
-    pinMode(SEL_BTN, INPUT);
-    pinMode(DW_BTN, INPUT);
-    pinMode(R_BTN, INPUT);
-    pinMode(L_BTN, INPUT);
+    // Diubah ke INPUT_PULLUP agar pin tidak mengambang (floating) dan memicu pencet sendiri
+    pinMode(UP_BTN, INPUT_PULLUP);
+    pinMode(SEL_BTN, INPUT_PULLUP);
+    pinMode(DW_BTN, INPUT_PULLUP);
+    pinMode(R_BTN, INPUT_PULLUP);
+    pinMode(L_BTN, INPUT_PULLUP);
 
     bruceConfig.colorInverted = 0;
     bruceConfigPins.rotation = 0; // portrait mode for Phantom
